@@ -1,0 +1,30 @@
+$(document).ready(function() {
+	"use strict";
+	var ENDPOINT = "http://localhost:3000/tasks";
+	Console.log("AHAHAHAHA");
+	Console.log(ENDPOINT);
+	$.ajax(ENDPOINT, {
+		method: "GET",
+		dataType: "json"
+	}).then(function(response) {
+		console.log(response);
+	});
+	var task = {
+		title: "task1"
+	};
+			var createPromise = $.ajax(ENDPOINT, {
+		 		method: "POST",
+		 		contentType: "application/json; charset=utf-8",
+		 		data: JSON.stringify(task),
+		 		dataType: "json"
+		 	}).then(function(response) {
+		 		console.log(response);
+				return response;
+		 	});
+			createPromise.then(function(response) {
+				$.ajax(taskEndpoint(response.id), {
+				method: "DELETE"
+				});
+			});	
+						
+});	
