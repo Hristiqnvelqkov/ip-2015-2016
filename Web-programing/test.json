@@ -1,0 +1,111 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Ivan",
+      "username": "iivanov",
+      "password": "asassa"
+    },
+    {
+      "id": 2,
+      "name": "Petar",
+      "username": "ppetkov",
+      "password": "as1212"
+    },
+    {
+      "name": "assaas",
+      "username": "asassa",
+      "password": "asa211as",
+      "id": 3
+    },
+    {
+      "name": "assasasa",
+      "username": "sasaas",
+      "password": "1223ss",
+      "id": 4
+    },
+    {
+      "name": "Hristiqn",
+      "username": "hriso1997",
+      "password": 123456,
+      "id": 5
+    }
+  ],
+  "activities": [
+    {
+      "id": 1,
+      "startDate": "2016-02-22T10:29:28.586Z",
+      "endDate": "2016-02-22T10:30:28.586Z",
+      "userId": 1,
+      "distanceCovered": 10,
+      "comment": "I was very excited from my first drive",
+      "location": "Pista Drakon"
+    },
+    {
+      "id": 2,
+      "startDate": "2016-03-22T10:29:28.586Z",
+      "endDate": "2016-03-22T10:30:28.586Z",
+      "userId": 1,
+      "distanceCovered": 12,
+      "comment": "Much better",
+      "location": "Pista Drakon"
+    },
+    {
+      "id": 3,
+      "startDate": "2016-03-02T10:29:28.586Z",
+      "endDate": "2016-03-02T10:30:28.586Z",
+      "userId": 2,
+      "distanceCovered": 7,
+      "comment": "Igrali sme dobro - nemali sme shanso",
+      "location": "Pista Drakon"
+    },
+    {
+      "startDate": "2016-03-07T15:55:34.333Z",
+      "endDate": "2016-03-07T15:55:41.387Z",
+      "location": "sdsdds",
+      "id": 4
+    },
+    {
+      "startDate": "2016-03-07T15:57:01.623Z",
+      "endDate": "2016-03-07T15:57:07.342Z",
+      "location": "fddfdfd",
+      "id": 5
+    },
+    {
+      "startDate": "2016-03-07T15:57:44.988Z",
+      "endDate": "2016-03-07T15:57:51.028Z",
+      "location": "ffdfd",
+      "id": 6
+    },
+    {
+      "startDate": "2016-03-07T16:19:44.040Z",
+      "endDate": "2016-03-07T16:19:52.263Z",
+      "location": "fdfddfdf",
+      "id": 7
+    },
+    {
+      "startDate": "2016-03-08T06:46:21.032Z",
+      "endDate": "2016-03-08T06:46:26.536Z",
+      "location": "ssdds",
+      "id": 8
+    },
+    {
+      "startDate": "2016-03-08T06:47:12.323Z",
+      "endDate": "2016-03-08T06:47:18.359Z",
+      "location": "sdsdsdds",
+      "id": 9
+    },
+    {
+      "startDate": "2016-03-08T06:48:35.228Z",
+      "endDate": "2016-03-08T06:48:40.410Z",
+      "location": "sdds",
+      "id": 10
+    },
+    {
+      "startDate": "2016-03-08T06:49:23.571Z",
+      "endDate": "2016-03-08T06:49:28.522Z",
+      "location": "assaassa",
+      "id": 11
+    }
+  ]
+}
