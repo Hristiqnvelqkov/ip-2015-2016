@@ -2,11 +2,15 @@ var startlatitude=0;
 var startlong=0;
 var finishlatitude=0;
 var finishlong=0;
+var current_user=0;
 var ENDPOINT="http://localhost:3000/users"
 var ENDPOINT1="http://localhost:3000/activities"
+$(".table").append("<input class=log_username placeholder=Username></input>");
+$(".table").append("<br><input class=log_password placeholder=Password></input>");
 $(".login").click(function(){
-	var username=$(".username").val();
-	var pass=$(".password").val();
+	(".table").append("<button class=EditProfile>Edit Profile</button>");
+	var username=$(".log_username").val();
+	var pass=$(".log_password").val();
 $.ajax(ENDPOINT, {
 		method: "GET",
 		data: {
@@ -18,17 +22,52 @@ $.ajax(ENDPOINT, {
 		console.log(response);
 		for (var i=0;i<response.length;i++){
 			console.log(response[i].username);
+			current_user=response[i];
 		}
-		// if ((response.username==username) && (response.password==pass)){
-		// 	window.location.replace("/home/hriso/Desktop/Web-programing/myprofile.html");
-		// }else {
-			
-		// }
+		 if ((current_user.username==username) && (current_user.password==pass)){
+		 	userfunctions(current_user);
+		 	$(".log_username").remove();
+		 	$(".log_password").remove();
+		}
+	});
+});
+$(document).on("click",".EditProfile", function(){
+	$(".table").append("<input class=editusername>New Username</input>");
+	$(".table").append("<br><input class=editname>New Name</input>");
+	$(".table").append("<br><input class=editpassword>New Pass</input>");
+	$(".table").append("<br><button class=update>Update</button>");
+	$(".update").click(function(){
+		var username=$(".editusername").val();
+		var name=$(".editname").val();
+		var pass=$(".editpassword").val();
+		var user = {
+			name: name,
+			username: username,
+			password: pass
+		};
+		$.ajax(ENDPOINT+"/"+current_user.id, {
+			method: "PUT",
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(user),
+			dataType: "json"
+		}).then(function(response) {
+			window.location.replace("/home/hriso/Desktop/Web-programing/myprofile.html");
+		});
 	});
 });
 $(".signup").click(function(){
+	$(this).remove();
+	$(".login").remove();
+	$(".log_username").remove();
+	$(".log_password").remove();
+	$(".table").append("<input class=username placeholder=Username></input>");
+	$(".table").append("<br><input class=name placeholder=Name></input>");
+	$(".table").append("<br><input class=password placeholder=Password></input>");
+	$(".table").append("<br><button class=createUser>Welcome</button>");
+	$(document).on("click",".createUser",function(){
+		$(".table").append("<button class=EditProfile>Edit Profile</button>");
 	var username=$(".username").val();
-	var name=$(".name").val();
+		var name=$(".name").val();
 	var pass=$(".password").val();
 	var user = {
 		name: name,
@@ -41,9 +80,17 @@ $(".signup").click(function(){
 		data: JSON.stringify(user),
 		dataType: "json"
 	}).then(function(response) {
-		window.location.replace("/home/hriso/Desktop/Web-programing/myprofile.html");
+		current_user=response;
+		$(".username").remove();
+		$(".name").remove();
+		$(".password").remove();
+		$(".createUser").remove();
+		userfunctions(current_user);
 	});
 });
+});
+function userfunctions(user){
+$(".searchdiv").append("<button class=start>Start</button>");
 $(".start").click(function(){
 	$(".searchdiv").append("<input class=trackloc></input>");
 	$(".searchdiv").append("<button class=goon>GO</button>");
@@ -52,29 +99,6 @@ $(".start").click(function(){
 		navigator.geolocation.getCurrentPosition(success, error, options);
 		$(".start").replaceWith("<button class=finish>finish</button>")
 		$(document).on("click" ,".finish",function(){
-			$(this).remove();
-			var finish = new Date();
-			var diff=finish-starttime
-			var msec = diff;
-			var hh = Math.floor(msec / 1000 / 60 / 60);
-			msec -= hh * 1000 * 60 * 60;
-			var mm = Math.floor(msec / 1000 / 60);
-			msec -= mm * 1000 * 60;
-			var ss = Math.floor(msec / 1000);
-			msec -= ss * 1000;
-			var activity = {
-				startDate: starttime,
-				endDate: finish,
-				location: $(".trackloc").val()
-			};
-			$.ajax(ENDPOINT1, {
-				method: "POST",
-				contentType: "application/json; charset=utf-8",
-				data: JSON.stringify(activity),
-				dataType: "json"
-			}).then(function(response) {
-				console.log(response);
-			});
 			navigator.geolocation.getCurrentPosition(success1, error, options)
 			$(".searchdiv").append("<button class=test>Cukni</button>")
 			$(document).on("click",".test",function(){
@@ -86,12 +110,37 @@ $(".start").click(function(){
 					lat: finishlatitude,
 					lon: finishlong
 				};
-				calculateDistance(startloc,finishloc);
+				var distance = calculateDistance(startloc,finishloc);
+				var finish = new Date();
+				var diff=finish-starttime
+				var msec = diff;
+				var hh = Math.floor(msec / 1000 / 60 / 60);
+				msec -= hh * 1000 * 60 * 60;
+				var mm = Math.floor(msec / 1000 / 60);
+				msec -= mm * 1000 * 60;
+				var ss = Math.floor(msec / 1000);
+				msec -= ss * 1000;
+				var activity = {
+					startDate: starttime,
+					endDate: finish,
+					location: $(".trackloc").val(),
+					distanceCovered: distance
+				};
+				$.ajax(ENDPOINT1, {
+					method: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(activity),
+					dataType: "json"
+				}).then(function(response) {
+					console.log(response);
+				});
+				
 			});
 		});
 			$(".start").remove();
 	});
 });
+}
 $(".searchloc").click(function(){
 	var track=$(".searchbyloc").val();
 	$.ajax(ENDPOINT1, {
@@ -127,21 +176,11 @@ function success(pos) {
   var crd = pos.coords;
   startlatitude=crd.latitude;
   startlong=crd.longitude;
-  console.log('Your current position is:');
-  console.log('Latitude : ' + crd.latitude);
-  console.log('Longitude: ' + crd.longitude);
-  console.log('More or less ' + crd.accuracy + ' meters.');
-
 };
 function success1(pos) {
   var crd = pos.coords;
   finishlatitude=crd.latitude;
   finishlong=crd.longitude;
-  console.log('Your current position is:');
-  console.log('Latitude : ' + crd.latitude);
-  console.log('Longitude: ' + crd.longitude);
-  console.log('More or less ' + crd.accuracy + ' meters.');
-
 };
 
 function error(err) {
@@ -158,4 +197,5 @@ function calculateDistance(posA, posB) {
     var ret = Math.pow(disLat, 2) + Math.pow(disLon, 2); 
     ret = Math.sqrt(ret)
     console.log(ret);
+    return ret;
 }
